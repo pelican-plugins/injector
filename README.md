@@ -40,12 +40,25 @@ or three elements, according to this table:
 | Second | The code you want to inject |
 | Third (optional) | Specifies where to inject the code: 'before' or 'after'. If not provided, it defaults to 'after' |
 
-```
+```python
     INJECTOR_CONFIG = [
         ('head', '<script>...</script>', 'after'),
         ('body', '<div>...</div>', 'before'),
         // add more tags and code as needed
     ]
+```
+
+In the following example, a script logging "Hello, world!" to the console is
+injected into the <head> tag of each page, and a style block is injected
+before the <body> tag.
+
+```python
+INJECTOR_CONFIG = [
+    ('head', '<script>console.log("Hello, world!");</script>'),
+    ('body', '<style>.custom-style { color: red; }</style>', 'before'),
+]
+INJECT_INTO_PAGES = True
+INJECT_INTO_ARTICLES = False
 ```
 
 In the INJECTOR_CONFIG list, replace ... with your actual code.
