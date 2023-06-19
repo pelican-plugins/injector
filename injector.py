@@ -59,6 +59,7 @@ def page_writer(instance, content):
 # This would be called after Pelican writes .html files.
 # Adding a regex to indicate which filenames/paths would be affected by injection
 # might also be a useful feature for users, and this could be integrated into the get_writer method.
+# A regex could be specified by the user, to indicate on which filenames/paths injection should occur.
 #
 # Example of how this might look:
 #
