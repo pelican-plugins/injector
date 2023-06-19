@@ -6,9 +6,9 @@ from pelican import signals
 
 log = logging.getLogger(__name__)
 
-def content_object_init(instance):
+def inject_content(instance):
     """
-    Pelican callback
+    Function for injecting code
     """
     if instance._content is None:
         return
@@ -38,8 +38,42 @@ def content_object_init(instance):
     instance._content = str(soup_doc)
 
 
+def article_writer(instance, content):
+    """
+    Callback for article_generator_write_article signal
+    """
+    if instance.settings.get('INJECT_IN_ARTICLES', False):
+        inject_content(content)
+
+
+def page_writer(instance, content):
+    """
+    Callback for page_generator_write_page signal
+    """
+    if instance.settings.get('INJECT_IN_PAGES', False):
+        inject_content(content)
+
+
+# TODO: An enhancement to consider for the future is using the get_writer signal method,
+# which is invoked in Pelican.get_writer. This can return a custom Writer.
+# This would be called after Pelican writes .html files.
+# Adding a regex to indicate which filenames/paths would be affected by injection
+# might also be a useful feature for users, and this could be integrated into the get_writer method.
+#
+# Example of how this might look:
+#
+# def get_writer(instance):
+#     """
+#     Callback for get_writer signal
+#     """
+#     if instance.settings.get('INJECT_IN_WRITER', False):
+#         # Perform regex matching on filenames/paths here
+#         # ...
+
 def register():
     """
     Part of Pelican API
     """
-    signals.content_object_init.connect(content_object_init)
+    signals.article_generator_write_article.connect(article_writer)
+    signals.page_generator_write_page.connect(page_writer)
+    # signals.get_writer.connect(get_writer)  # Uncomment this when get_writer method is implemented
