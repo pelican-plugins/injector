@@ -3,7 +3,7 @@ name = "pelican-injector"
 version = "0.0.0"
 description = "Pelican plugin to inject custom code before or after specific HTML tags"
 authors = [
-    {name = "Arturo Busleiman", email = "buanzo@buanzo.com.ar"},
+    {name = "Arturo 'Buanzo' Busleiman", email = "buanzo@buanzo.com.ar"},
     {name = "Justin Mayer", email = "entroP@gmail.com"}
 ]
 readme = "README.md"
