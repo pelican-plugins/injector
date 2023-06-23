@@ -1,32 +1,18 @@
-# pelican-injector
+# Injector: A Plugin for Pelican
 
-Pelican-Injector is a plugin for the Pelican static site generator that
-allows users to inject custom code before or after specific HTML tags,
-without modifying your theme.
+[![Build Status](https://img.shields.io/github/actions/workflow/status/pelican-plugins/yaml-metadata/main.yml?branch=main)](https://github.com/pelican-plugins/yaml-metadata/actions)
+[![PyPI Version](https://img.shields.io/pypi/v/pelican-yaml-metadata)](https://pypi.org/project/pelican-yaml-metadata/)
+![License](https://img.shields.io/pypi/l/pelican-yaml-metadata?color=blue)
 
-## Requirements
-
-* BeautifulSoup4
-
-To install it using pip, type: `pip install bs4`
+Injector is a plugin for the [Pelican](https://github.com/getpelican/pelican) static site generator that allows users to inject custom code before or after specific HTML tags, without modifying your theme.
 
 ## Installation
 
-Download the `pelican_injector.py` file and place it into your Pelican plugins directory.
+This plugin can be installed via:
 
-Then add `pelican_injector` to your `PLUGINS` list in the `pelicanconf.py` file:
+    python -m pip install pelican-injector
 
-```
-    PLUGINS_PATH = [
-        # [...]
-        'path/to/your/plugins'
-    ]
-    PLUGINS = [
-         # [...]
-        'pelican_injector',
-    ]
-```
-
+As long as you have not explicitly added a `PLUGINS` setting to your Pelican settings file, then the newly-installed plugin should be automatically detected and enabled. Otherwise, you must add `injector` to your existing `PLUGINS` list. For more information, please see the [How to Use Plugins](https://docs.getpelican.com/en/latest/plugins.html#how-to-use-plugins) documentation.
 
 ## Settings
 
@@ -62,10 +48,18 @@ INJECTOR_IN_ARTICLES = False
 ```
 
 ## Contributing
-Contributions are welcome! Please fork this repository and create a pull request with your changes.
+
+Contributions are welcome and much appreciated. Every little bit helps. You can contribute by improving the documentation, adding missing features, and fixing bugs. You can also help out by reviewing and commenting on [existing issues][].
+
+To start contributing to this plugin, review the [Contributing to Pelican][] documentation, beginning with the **Contributing Code** section.
+
+[existing issues]: https://github.com/pelican-plugins/injector/issues
+[Contributing to Pelican]: https://docs.getpelican.com/en/latest/contribute.html
 
 ## License
-This project is licensed under the MIT License.
+
+This project is licensed under the [MIT license](https://opensource.org/licenses/MIT).
 
 ## Contact
+
 If you have any questions or feedback, please open an issue on GitHub.
