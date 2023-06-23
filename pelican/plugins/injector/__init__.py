@@ -1,5 +1,1 @@
-# -*- coding: utf8 -*-
-
-from .injector import *
-
-
+from .injector import *  # noqa: F403
