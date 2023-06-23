@@ -30,8 +30,8 @@ Then add `pelican_injector` to your `PLUGINS` list in the `pelicanconf.py` file:
 
 ## Settings
 
-To configure the pelican-injector, set the INJECTOR_CONFIG option in your
-Pelican configuration file.  This should be a list of tuples, each with two
+To configure the plugin, set the `INJECTOR_ITEMS` variable in your
+Pelican settings file. This should be a list of tuples, each with two
 or three elements, according to this table:
 
 | Tuple Element | Description |
@@ -41,7 +41,7 @@ or three elements, according to this table:
 | Third (optional) | Specifies where to inject the code: 'before' or 'after'. If not provided, it defaults to 'after' |
 
 ```python
-    INJECTOR_CONFIG = [
+    INJECTOR_ITEMS = [
         ('head', '<script>...</script>', 'after'),
         ('body', '<div>...</div>', 'before'),
         // add more tags and code as needed
@@ -49,19 +49,17 @@ or three elements, according to this table:
 ```
 
 In the following example, a script logging "Hello, world!" to the console is
-injected into the <head> tag of each page, and a style block is injected
-before the <body> tag.
+injected into the `<head>` tag of each page, and a style block is injected
+before the `<body>` tag.
 
 ```python
-INJECTOR_CONFIG = [
+INJECTOR_ITEMS = [
     ('head', '<script>console.log("Hello, world!");</script>'),
     ('body', '<style>.custom-style { color: red; }</style>', 'before'),
 ]
-INJECT_INTO_PAGES = True
-INJECT_INTO_ARTICLES = False
+INJECTOR_IN_PAGES = True
+INJECTOR_IN_ARTICLES = False
 ```
-
-In the INJECTOR_CONFIG list, replace ... with your actual code.
 
 ## Contributing
 Contributions are welcome! Please fork this repository and create a pull request with your changes.

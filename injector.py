@@ -15,15 +15,15 @@ def inject_content(instance):
 
     soup_doc = BeautifulSoup(instance._content, 'html.parser')
 
-    injector_config = instance.settings.get('INJECTOR_CONFIG', [])
-    
-    for config in injector_config:
-        if len(config) not in (2, 3):
-            log.warning("Invalid INJECTOR_CONFIG item: %s", config)
+    injections = instance.settings.get('INJECTOR_ITEMS', [])
+
+    for injection in injections:
+        if len(injection) not in (2, 3):
+            log.warning("Invalid INJECTOR_ITEMS item: %s", injection)
             continue
 
-        tag, code = config[0], config[1]
-        position = 'after' if len(config) < 3 else config[2]
+        tag, code = injection[0], injection[1]
+        position = 'after' if len(injection) < 3 else injection[2]
 
         tag_to_inject = soup_doc.find(tag)
         if not tag_to_inject:
@@ -42,7 +42,7 @@ def article_writer(instance, content):
     """
     Callback for article_generator_write_article signal
     """
-    if instance.settings.get('INJECT_IN_ARTICLES', False):
+    if instance.settings.get('INJECTOR_IN_ARTICLES', False):
         inject_content(content)
 
 
@@ -50,7 +50,7 @@ def page_writer(instance, content):
     """
     Callback for page_generator_write_page signal
     """
-    if instance.settings.get('INJECT_IN_PAGES', False):
+    if instance.settings.get('INJECTOR_IN_PAGES', False):
         inject_content(content)
 
 
@@ -67,7 +67,7 @@ def page_writer(instance, content):
 #     """
 #     Callback for get_writer signal
 #     """
-#     if instance.settings.get('INJECT_IN_WRITER', False):
+#     if instance.settings.get('INJECTOR_IN_WRITER', False):
 #         # Perform regex matching on filenames/paths here
 #         # ...
 
