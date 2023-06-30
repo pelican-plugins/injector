@@ -74,11 +74,7 @@ def final_injection_attempt(path, context):
     if not failed_injections:
         return
 
-<<<<<<< HEAD
-    with open(path, "r") as f:
-=======
     with open(path) as f:
->>>>>>> 7f2e2c6 (Static analysis fix. Removing r from open() and adding Return None in inject_content())
         content = f.read()
 
     soup_doc = BeautifulSoup(content, "html.parser")
