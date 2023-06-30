@@ -66,19 +66,20 @@ def page_writer(instance, content):
     if instance.settings.get("INJECTOR_IN_PAGES", False):
         inject_content(content)
 
+
 def final_injection_attempt(path, context):
     """Try to perform injections that failed in inject_content()."""
     failed_injections = context.get("failed_injections", [])
     if not failed_injections:
         return
 
-    with open(path, 'r') as f:
+    with open(path, "r") as f:
         content = f.read()
 
     soup_doc = BeautifulSoup(content, "html.parser")
     new_content = perform_injections(soup_doc, failed_injections)
 
-    with open(path, 'w') as f:
+    with open(path, "w") as f:
         f.write(new_content)
 
 
