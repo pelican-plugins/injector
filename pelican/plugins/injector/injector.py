@@ -7,34 +7,52 @@ from pelican import signals
 log = logging.getLogger(__name__)
 
 
+def perform_injections(soup_doc, injections):
+    """Perform code injections."""
+    for injection in injections:
+        tag, code = injection[0], injection[1]
+        position = "after" if len(injection) < 3 else injection[2]
+
+        tag_to_inject = soup_doc.find(tag)
+        if tag_to_inject:
+            if position == "before":
+                tag_to_inject.insert_before(BeautifulSoup(code, "html.parser"))
+            else:
+                tag_to_inject.append(BeautifulSoup(code, "html.parser"))
+        else:
+            log.warning("The specified tag was not found: %s", tag)
+
+    return str(soup_doc)
+
+
 def inject_content(instance):
     """Inject code."""
     if instance._content is None:
-        return
+        return []
 
     soup_doc = BeautifulSoup(instance._content, "html.parser")
 
     injections = instance.settings.get("INJECTOR_ITEMS", [])
+    failed_injections = []
 
     for injection in injections:
         if len(injection) not in (2, 3):
             log.warning("Invalid INJECTOR_ITEMS item: %s", injection)
             continue
 
-        tag, code = injection[0], injection[1]
-        position = "after" if len(injection) < 3 else injection[2]
-
+        tag = injection[0]
         tag_to_inject = soup_doc.find(tag)
+
         if not tag_to_inject:
-            log.warning("The specified tag was not found: %s", tag)
+            failed_injections.append(injection)
             continue
 
-        if position == "before":
-            tag_to_inject.insert_before(BeautifulSoup(code, "html.parser"))
-        else:
-            tag_to_inject.append(BeautifulSoup(code, "html.parser"))
+        soup_doc = BeautifulSoup(
+            perform_injections(soup_doc, [injection]), "html.parser"
+        )
 
     instance._content = str(soup_doc)
+    instance._context["failed_injections"] = failed_injections
 
 
 def article_writer(instance, content):
@@ -48,29 +66,24 @@ def page_writer(instance, content):
     if instance.settings.get("INJECTOR_IN_PAGES", False):
         inject_content(content)
 
+def final_injection_attempt(path, context):
+    """Try to perform injections that failed in inject_content()."""
+    failed_injections = context.get("failed_injections", [])
+    if not failed_injections:
+        return
 
-# TODO: An enhancement to consider for the future is using the get_writer signal method,
-# which is invoked in Pelican.get_writer. This can return a custom Writer.
-# This would be called after Pelican writes .html files.
-# Adding a regex to indicate which filenames/paths would be affected by injection
-# might also be a useful feature for users, and this could be integrated into the
-# get_writer method. A regex could be specified by the user, to indicate on which
-# filenames/paths injection should occur.
-#
-# Example of how this might look:
-#
-# def get_writer(instance):
-#     """
-#     Callback for get_writer signal
-#     """
-#     if instance.settings.get('INJECTOR_IN_WRITER', False):
-#         # Perform regex matching on filenames/paths here
-#         # ...
+    with open(path, 'r') as f:
+        content = f.read()
+
+    soup_doc = BeautifulSoup(content, "html.parser")
+    new_content = perform_injections(soup_doc, failed_injections)
+
+    with open(path, 'w') as f:
+        f.write(new_content)
 
 
 def register():
     """Register plugin with Pelican."""
     signals.article_generator_write_article.connect(article_writer)
     signals.page_generator_write_page.connect(page_writer)
-    # Uncomment following when get_writer method is implemented:
-    # signals.get_writer.connect(get_writer)
+    signals.content_written.connect(final_injection_attempt)
