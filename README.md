@@ -27,11 +27,11 @@ or three elements, according to this table:
 | Third (optional) | Specifies where to inject the code: 'before' or 'after'. If not provided, it defaults to 'after' |
 
 ```python
-    INJECTOR_ITEMS = [
-        ('head', '<script>...</script>', 'after'),
-        ('body', '<div>...</div>', 'before'),
-        // add more tags and code as needed
-    ]
+INJECTOR_ITEMS = [
+    ('head', '<script>...</script>', 'after'),
+    ('body', '<div>...</div>', 'before'),
+    // add more tags and code as needed
+]
 ```
 
 In the following example, a script logging "Hello, world!" to the console is
