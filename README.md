@@ -1,8 +1,8 @@
 # Injector: A Plugin for Pelican
 
-[![Build Status](https://img.shields.io/github/actions/workflow/status/pelican-plugins/yaml-metadata/main.yml?branch=main)](https://github.com/pelican-plugins/yaml-metadata/actions)
-[![PyPI Version](https://img.shields.io/pypi/v/pelican-yaml-metadata)](https://pypi.org/project/pelican-yaml-metadata/)
-![License](https://img.shields.io/pypi/l/pelican-yaml-metadata?color=blue)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/pelican-plugins/injector/main.yml?branch=main)](https://github.com/pelican-plugins/injector/actions)
+[![PyPI Version](https://img.shields.io/pypi/v/pelican-injector)](https://pypi.org/project/pelican-injector/)
+![License](https://img.shields.io/pypi/l/pelican-injector?color=blue)
 
 Injector is a plugin for the [Pelican](https://github.com/getpelican/pelican) static site generator that allows users to inject custom code before or after specific HTML tags, without modifying your theme.
 
